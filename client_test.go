@@ -8,8 +8,17 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jomei/notionapi"
+	"github.com/tenz-io/notionapi"
+
+	"github.com/tenz-io/gokit/httpcli"
+	"github.com/tenz-io/gokit/logger"
 )
+
+func init() {
+	logger.ConfigureTrafficWithOpts(
+		logger.WithTrafficEnabled(true),
+	)
+}
 
 // RoundTripFunc .
 type RoundTripFunc func(req *http.Request) *http.Response
@@ -21,9 +30,16 @@ func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
 
 // newTestClient returns *http.Client with Transport replaced to avoid making real calls
 func newTestClient(fn RoundTripFunc) *http.Client {
-	return &http.Client{
+	hc := &http.Client{
 		Transport: fn,
 	}
+
+	interceptor := httpcli.NewInterceptorWithOpts(
+		httpcli.WithEnableTraffic(true),
+	)
+	interceptor.Apply(hc)
+
+	return hc
 }
 
 // newMockedClient returns *http.Client which responds with content from given file
@@ -37,7 +53,7 @@ func newMockedClient(t *testing.T, requestMockFile string, statusCode int) *http
 		resp := &http.Response{
 			StatusCode: statusCode,
 			Body:       b,
-			Header:     make(http.Header),
+			Header:     http.Header{"Content-Type": []string{"application/json"}},
 		}
 		return resp
 	})

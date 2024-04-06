@@ -2,9 +2,10 @@ package notionapi_test
 
 import (
 	"context"
-	"github.com/jomei/notionapi"
 	"net/http"
 	"testing"
+
+	"github.com/tenz-io/notionapi"
 )
 
 func TestSearchClient(t *testing.T) {

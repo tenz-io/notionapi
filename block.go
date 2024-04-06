@@ -387,6 +387,7 @@ func (b EquationBlock) GetRichTextString() string {
 func (b BasicBlock) GetRichTextString() string {
 	return "No rich text of a basic block."
 }
+
 var _ Block = (*BasicBlock)(nil)
 
 type ParagraphBlock struct {
