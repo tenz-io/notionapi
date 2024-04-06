@@ -383,7 +383,7 @@ func (p VerificationPropertyConfig) GetID() PropertyID {
 type PropertyConfigs map[string]PropertyConfig
 
 func (p *PropertyConfigs) UnmarshalJSON(data []byte) error {
-	var raw map[string]interface{}
+	var raw map[string]any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
@@ -396,12 +396,12 @@ func (p *PropertyConfigs) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func parsePropertyConfigs(raw map[string]interface{}) (PropertyConfigs, error) {
+func parsePropertyConfigs(raw map[string]any) (PropertyConfigs, error) {
 	result := make(PropertyConfigs)
 	for k, v := range raw {
 		var p PropertyConfig
 		switch rawProperty := v.(type) {
-		case map[string]interface{}:
+		case map[string]any:
 			switch PropertyConfigType(rawProperty["type"].(string)) {
 			case PropertyConfigTypeTitle:
 				p = &TitlePropertyConfig{}

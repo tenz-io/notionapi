@@ -82,7 +82,7 @@ func (bc *BlockClient) Get(ctx context.Context, id BlockID) (Block, error) {
 		}
 	}()
 
-	var response map[string]interface{}
+	var response map[string]any
 	err = json.NewDecoder(res.Body).Decode(&response)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func (bc *BlockClient) Update(ctx context.Context, id BlockID, requestBody *Bloc
 		}
 	}()
 
-	var response map[string]interface{}
+	var response map[string]any
 	err = json.NewDecoder(res.Body).Decode(&response)
 	if err != nil {
 		return nil, err
@@ -193,7 +193,7 @@ func (bc *BlockClient) Delete(ctx context.Context, id BlockID) (Block, error) {
 		}
 	}()
 
-	var response map[string]interface{}
+	var response map[string]any
 	err = json.NewDecoder(res.Body).Decode(&response)
 	if err != nil {
 		return nil, err
@@ -225,7 +225,7 @@ type Blocks []Block
 
 func (b *Blocks) UnmarshalJSON(data []byte) error {
 	var err error
-	mapArr := make([]map[string]interface{}, 0)
+	mapArr := make([]map[string]any, 0)
 	if err = json.Unmarshal(data, &mapArr); err != nil {
 		return err
 	}
@@ -748,8 +748,8 @@ type AppendBlockChildrenResponse struct {
 }
 
 type appendBlockResponse struct {
-	Object  ObjectType               `json:"object"`
-	Results []map[string]interface{} `json:"results"`
+	Object  ObjectType       `json:"object"`
+	Results []map[string]any `json:"results"`
 }
 
 func (r *AppendBlockChildrenResponse) UnmarshalJSON(data []byte) error {
@@ -773,7 +773,7 @@ func (r *AppendBlockChildrenResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func decodeBlock(raw map[string]interface{}) (Block, error) {
+func decodeBlock(raw map[string]any) (Block, error) {
 	var b Block
 	switch BlockType(raw["type"].(string)) {
 	case BlockTypeParagraph:

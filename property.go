@@ -17,7 +17,7 @@ type PropertyArray []Property
 
 func (arr *PropertyArray) UnmarshalJSON(data []byte) error {
 	var err error
-	mapArr := make([]map[string]interface{}, 0)
+	mapArr := make([]map[string]any, 0)
 	if err = json.Unmarshal(data, &mapArr); err != nil {
 		return err
 	}
@@ -410,7 +410,7 @@ func (p ButtonProperty) GetType() PropertyType {
 type Properties map[string]Property
 
 func (p *Properties) UnmarshalJSON(data []byte) error {
-	var raw map[string]interface{}
+	var raw map[string]any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
@@ -423,11 +423,11 @@ func (p *Properties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func parsePageProperties(raw map[string]interface{}) (map[string]Property, error) {
+func parsePageProperties(raw map[string]any) (map[string]Property, error) {
 	result := make(map[string]Property)
 	for k, v := range raw {
 		switch rawProperty := v.(type) {
-		case map[string]interface{}:
+		case map[string]any:
 			p, err := decodeProperty(rawProperty)
 			if err != nil {
 				return nil, err
@@ -450,7 +450,7 @@ func parsePageProperties(raw map[string]interface{}) (map[string]Property, error
 	return result, nil
 }
 
-func decodeProperty(raw map[string]interface{}) (Property, error) {
+func decodeProperty(raw map[string]any) (Property, error) {
 	var p Property
 	switch PropertyType(raw["type"].(string)) {
 	case PropertyTypeTitle:

@@ -79,10 +79,10 @@ type SearchResponse struct {
 
 func (sr *SearchResponse) UnmarshalJSON(data []byte) error {
 	var tmp struct {
-		Object     ObjectType    `json:"object"`
-		Results    []interface{} `json:"results"`
-		HasMore    bool          `json:"has_more"`
-		NextCursor Cursor        `json:"next_cursor"`
+		Object     ObjectType `json:"object"`
+		Results    []any      `json:"results"`
+		HasMore    bool       `json:"has_more"`
+		NextCursor Cursor     `json:"next_cursor"`
 	}
 
 	err := json.Unmarshal(data, &tmp)
@@ -92,13 +92,13 @@ func (sr *SearchResponse) UnmarshalJSON(data []byte) error {
 	objects := make([]Object, len(tmp.Results))
 	for i, rawObject := range tmp.Results {
 		var o Object
-		switch rawObject.(map[string]interface{})["object"].(string) {
+		switch rawObject.(map[string]any)["object"].(string) {
 		case ObjectTypeDatabase.String():
 			o = &Database{}
 		case ObjectTypePage.String():
 			o = &Page{}
 		default:
-			return fmt.Errorf("unsupported object type %s", rawObject.(map[string]interface{})["object"].(string))
+			return fmt.Errorf("unsupported object type %s", rawObject.(map[string]any)["object"].(string))
 		}
 		j, err := json.Marshal(rawObject)
 		if err != nil {

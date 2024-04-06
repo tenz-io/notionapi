@@ -9,15 +9,12 @@ import (
 	"testing"
 
 	"github.com/tenz-io/notionapi"
-
-	"github.com/tenz-io/gokit/httpcli"
-	"github.com/tenz-io/gokit/logger"
 )
 
 func init() {
-	logger.ConfigureTrafficWithOpts(
-		logger.WithTrafficEnabled(true),
-	)
+	//logger.ConfigureTrafficWithOpts(
+	//	logger.WithTrafficEnabled(true),
+	//)
 }
 
 // RoundTripFunc .
@@ -34,10 +31,10 @@ func newTestClient(fn RoundTripFunc) *http.Client {
 		Transport: fn,
 	}
 
-	interceptor := httpcli.NewInterceptorWithOpts(
-		httpcli.WithEnableTraffic(true),
-	)
-	interceptor.Apply(hc)
+	//interceptor := httpcli.NewInterceptorWithOpts(
+	//	httpcli.WithEnableTraffic(true),
+	//)
+	//interceptor.Apply(hc)
 
 	return hc
 }

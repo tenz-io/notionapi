@@ -43,7 +43,7 @@ Notion-Version: {{api_version}}
     {
       "type": "text",
       "text": {
-        "content": "Grocery List",
+        "content": "Grocery List 2",
         "link": null
       }
     }

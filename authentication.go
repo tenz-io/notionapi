@@ -84,8 +84,8 @@ type TokenCreateResponse struct {
 
 	// Owner can be { "workspace": true } OR a User object.
 	// Ref: https://developers.notion.com/docs/authorization#step-4-notion-responds-with-an-access_token-and-some-additional-information
-	Owner         interface{} `json:"owner,omitempty"`
-	WorkspaceIcon string      `json:"workspace_icon"`
-	WorkspaceId   string      `json:"workspace_id"`
-	WorkspaceName string      `json:"workspace_name"`
+	Owner         any    `json:"owner,omitempty"`
+	WorkspaceIcon string `json:"workspace_icon"`
+	WorkspaceId   string `json:"workspace_id"`
+	WorkspaceName string `json:"workspace_name"`
 }

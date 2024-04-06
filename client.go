@@ -114,11 +114,11 @@ func WithOAuthAppCredentials(id, secret string) ClientOption {
 	}
 }
 
-func (c *Client) request(ctx context.Context, method string, urlStr string, queryParams map[string]string, requestBody interface{}) (*http.Response, error) {
+func (c *Client) request(ctx context.Context, method string, urlStr string, queryParams map[string]string, requestBody any) (*http.Response, error) {
 	return c.requestImpl(ctx, method, urlStr, queryParams, requestBody, false, decodeClientError)
 }
 
-func (c *Client) requestImpl(ctx context.Context, method string, urlStr string, queryParams map[string]string, requestBody interface{}, basicAuth bool, errDecoder errJsonDecodeFunc) (*http.Response, error) {
+func (c *Client) requestImpl(ctx context.Context, method string, urlStr string, queryParams map[string]string, requestBody any, basicAuth bool, errDecoder errJsonDecodeFunc) (*http.Response, error) {
 	u, err := c.baseUrl.Parse(fmt.Sprintf("%s/%s", c.apiVersion, urlStr))
 	if err != nil {
 		return nil, err
