@@ -27,15 +27,13 @@ type BlockClient struct {
 	apiClient *Client
 }
 
-// Creates and appends new children blocks to the parent block_id specified.
+// AppendChildren Creates and appends new children blocks to the parent block_id specified.
 // Blocks can be parented by other blocks, pages, or databases.
-
 // Returns a paginated list of newly created first level children block objects.
-
 // Existing blocks cannot be moved using this endpoint. Blocks are appended to
 // the bottom of the parent block. Once a block is appended as a child, it can't
 // be moved elsewhere via the API.
-
+//
 // For blocks that allow children, we allow up to two levels of nesting in a
 // single request.
 //
@@ -67,8 +65,7 @@ type AppendBlockChildrenRequest struct {
 	Children []Block `json:"children"`
 }
 
-// Retrieves a Block object using the ID specified.
-//
+// Get Retrieves a Block object using the ID specified.
 // Get https://developers.notion.com/reference/retrieve-a-block
 func (bc *BlockClient) Get(ctx context.Context, id BlockID) (Block, error) {
 	res, err := bc.apiClient.request(ctx, http.MethodGet, fmt.Sprintf("blocks/%s", id.String()), nil, nil)
@@ -90,7 +87,7 @@ func (bc *BlockClient) Get(ctx context.Context, id BlockID) (Block, error) {
 	return decodeBlock(response)
 }
 
-// Returns a paginated array of child block objects contained in the block using
+// GetChildren Returns a paginated array of child block objects contained in the block using
 // the ID specified. In order to receive a complete representation of a block,
 // you may need to recursively retrieve the block children of child blocks.
 //
@@ -123,7 +120,7 @@ type GetChildrenResponse struct {
 	HasMore    bool       `json:"has_more"`
 }
 
-// Updates the content for the specified block_id based on the block type.
+// Update the content for the specified block_id based on the block type.
 // Supported fields based on the block object type (see Block object for
 // available fields and the expected input for each field).
 //
@@ -174,7 +171,7 @@ type BlockUpdateRequest struct {
 	TableRow         *TableRow  `json:"table_row,omitempty"`
 }
 
-// Sets a Block object, including page blocks, to archived: true using the ID
+// Delete Sets a Block object, including page blocks, to archived: true using the ID
 // specified. Note: in the Notion UI application, this moves the block to the
 // "Trash" where it can still be accessed and restored.
 //

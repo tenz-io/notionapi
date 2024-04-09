@@ -22,3 +22,6 @@ http-client.private.env.json
 
 # logs
 *.log
+
+# Ignore all .env files
+.env

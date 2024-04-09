@@ -23,7 +23,7 @@ type CommentClient struct {
 	apiClient *Client
 }
 
-// Creates a comment in a page or existing discussion thread.
+// Create a comment in a page or existing discussion thread.
 //
 // There are two locations you can add a new comment to:
 // 1. A page
@@ -63,7 +63,7 @@ type CommentCreateRequest struct {
 	RichText     []RichText   `json:"rich_text"`
 }
 
-// Retrieves a list of un-resolved Comment objects from a page or block.
+// Get Retrieves a list of un-resolved Comment objects from a page or block.
 //
 // See https://developers.notion.com/reference/retrieve-a-comment
 func (cc *CommentClient) Get(ctx context.Context, id BlockID, pagination *Pagination) (*CommentQueryResponse, error) {

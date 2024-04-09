@@ -25,7 +25,7 @@ type PageClient struct {
 	apiClient *Client
 }
 
-// Creates a new page that is a child of an existing page or database.
+// Create a new page that is a child of an existing page or database.
 //
 // If the new page is a child of an existing page,title is the only valid
 // property in the properties body param.
@@ -73,7 +73,7 @@ type PageCreateRequest struct {
 	Cover *Image `json:"cover,omitempty"`
 }
 
-// Retrieves a Page object using the ID specified.
+// Get Retrieves a Page object using the ID specified.
 //
 // Responses contains page properties, not page content. To fetch page content,
 // use the Retrieve block children endpoint.
@@ -98,7 +98,7 @@ func (pc *PageClient) Get(ctx context.Context, id PageID) (*Page, error) {
 	return handlePageResponse(res)
 }
 
-// Updates the properties of a page in a database. The properties body param of
+// Update the properties of a page in a database. The properties body param of
 // this endpoint can only be used to update the properties of a page that is a
 // child of a database. The page’s properties schema must match the parent
 // database’s properties.
@@ -169,7 +169,7 @@ func (p *Page) GetObject() ObjectType {
 
 type ParentType string
 
-// Pages, databases, and blocks are either located inside other pages,
+// Parent Pages, databases, and blocks are either located inside other pages,
 // databases, and blocks, or are located at the top level of a workspace. This
 // location is known as the "parent". Parent information is represented by a
 // consistent parent object throughout the API.

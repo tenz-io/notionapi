@@ -24,7 +24,7 @@ type UserClient struct {
 	apiClient *Client
 }
 
-// Returns a paginated list of Users for the workspace. The response may contain
+// List Returns a paginated list of Users for the workspace. The response may contain
 // fewer than page_size of results.
 //
 // See https://developers.notion.com/reference/get-users
@@ -49,7 +49,7 @@ func (uc *UserClient) List(ctx context.Context, pagination *Pagination) (*UsersL
 	return &response, nil
 }
 
-// Retrieves a User using the ID specified.
+// Get Retrieves a User using the ID specified.
 //
 // See https://developers.notion.com/reference/get-user
 func (uc *UserClient) Get(ctx context.Context, id UserID) (*User, error) {
@@ -73,7 +73,7 @@ func (uc *UserClient) Get(ctx context.Context, id UserID) (*User, error) {
 	return &response, nil
 }
 
-// Retrieves the bot User associated with the API token provided in the
+// Me Retrieves the bot User associated with the API token provided in the
 // authorization header. The bot will have an owner field with information about
 // the person who authorized the integration.
 //

@@ -15,7 +15,7 @@ type AuthenticationClient struct {
 	apiClient *Client
 }
 
-// Creates an access token that a third-party service can use to authenticate
+// CreateToken Creates an access token that a third-party service can use to authenticate
 // with Notion.
 //
 // See https://developers.notion.com/reference/create-a-token

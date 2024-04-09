@@ -27,7 +27,7 @@ type DatabaseClient struct {
 	apiClient *Client
 }
 
-// Creates a database as a subpage in the specified parent page, with the
+// Create a database as a subpage in the specified parent page, with the
 // specified properties schema. Currently, the parent of a new database must be
 // a Notion page.
 //
@@ -65,7 +65,7 @@ type DatabaseCreateRequest struct {
 	IsInline   bool            `json:"is_inline"`
 }
 
-// Gets a list of Pages contained in the database, filtered and ordered
+// Query Gets a list of Pages contained in the database, filtered and ordered
 // according to the filter conditions and sort criteria provided in the request.
 // The response may contain fewer than page_size of results. If the response
 // includes a next_cursor value, refer to the pagination reference for details
@@ -116,7 +116,7 @@ type DatabaseQueryRequest struct {
 	PageSize int `json:"page_size,omitempty"`
 }
 
-// See https://developers.notion.com/reference/get-database
+// Get See https://developers.notion.com/reference/get-database
 func (dc *DatabaseClient) Get(ctx context.Context, id DatabaseID) (*Database, error) {
 	if id == "" {
 		return nil, errors.New("empty database id")

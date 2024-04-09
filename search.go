@@ -16,7 +16,7 @@ type SearchClient struct {
 	apiClient *Client
 }
 
-// Searches all parent or child pages and databases that have been shared with
+// Do Searches all parent or child pages and databases that have been shared with
 // an integration.
 //
 // Returns all pages or databases, excluding duplicated linked databases, that
@@ -24,7 +24,7 @@ type SearchClient struct {
 // the response contains all pages or databases that have been shared with the
 // integration. The results adhere to any limitations related to an integration’s
 // capabilities.
-
+//
 // To limit the request to search only pages or to search only databases, use
 // the filter param.
 //
