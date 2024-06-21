@@ -25,3 +25,5 @@ http-client.private.env.json
 
 # Ignore all .env files
 .env
+
+.DS_Store
