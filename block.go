@@ -781,9 +781,9 @@ func decodeBlock(raw map[string]any) (Block, error) {
 		b = &Heading2Block{}
 	case BlockTypeHeading3:
 		b = &Heading3Block{}
-	case BlockCallout:
+	case BlockTypeCallout:
 		b = &CalloutBlock{}
-	case BlockQuote:
+	case BlockTypeQuote:
 		b = &QuoteBlock{}
 	case BlockTypeBulletedListItem:
 		b = &BulletedListItemBlock{}
