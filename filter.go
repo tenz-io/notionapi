@@ -64,8 +64,19 @@ type PropertyFilter struct {
 func (f PropertyFilter) filter() {}
 
 type SearchFilter struct {
-	Value    string `json:"value"`
-	Property string `json:"property"`
+	Value    string `json:"value,omitempty"`
+	Property string `json:"property,omitempty"`
+}
+
+// MarshalJSON 自定义 JSON 序列化，当所有字段都为空时不序列化
+func (sf SearchFilter) MarshalJSON() ([]byte, error) {
+	if sf.Value == "" && sf.Property == "" {
+		return []byte("null"), nil
+	}
+
+	// 使用匿名字段来避免递归调用
+	type Alias SearchFilter
+	return json.Marshal(Alias(sf))
 }
 
 type TextFilterCondition struct {

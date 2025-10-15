@@ -61,7 +61,7 @@ type SearchRequest struct {
 	// A set of criteria, value and property keys, that limits the results to
 	// either only pages or only databases. Possible value values are "page" or
 	// "database". The only supported property value is "object".
-	Filter SearchFilter `json:"filter,omitempty"`
+	Filter *SearchFilter `json:"filter,omitempty"`
 	// A cursor value returned in a previous response that If supplied, limits the
 	// response to results starting after the cursor. If not supplied, then the
 	// first page of results is returned. Refer to pagination for more details.
