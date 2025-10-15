@@ -27,3 +27,4 @@ http-client.private.env.json
 .env
 
 .DS_Store
+.github
