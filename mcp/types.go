@@ -78,10 +78,8 @@ type NotionSearchParams struct {
 type NotionCreatePageParams struct {
 	ParentID   string         `json:"parentId"`
 	Title      string         `json:"title"`
-	Content    string         `json:"content,omitempty"`
-	Properties map[string]any `json:"properties,omitempty"`
-	Icon       *Icon          `json:"icon,omitempty"`
-	Cover      *Cover         `json:"cover,omitempty"`
+	Content    string         `json:"content,omitempty"`    // 支持 markdown 格式
+	Properties map[string]any `json:"properties,omitempty"` // 简化的属性定义
 }
 
 // NotionUpdatePageParams 表示更新 Notion 页面参数

@@ -57,45 +57,11 @@ func getDefaultTools() []Tool {
 					},
 					"content": map[string]any{
 						"type":        "string",
-						"description": "页面内容（可选）",
+						"description": "页面内容，支持 Markdown 格式（可选）",
 					},
 					"properties": map[string]any{
 						"type":        "object",
-						"description": "页面属性（可选）",
-					},
-					"icon": map[string]any{
-						"type":        "object",
-						"description": "页面图标（可选）",
-						"properties": map[string]any{
-							"type": map[string]any{
-								"type":        "string",
-								"description": "图标类型：'emoji' 或 'external'",
-								"enum":        []string{"emoji", "external"},
-							},
-							"emoji": map[string]any{
-								"type":        "string",
-								"description": "表情符号（当 type 为 'emoji' 时）",
-							},
-							"url": map[string]any{
-								"type":        "string",
-								"description": "图标 URL（当 type 为 'external' 时）",
-							},
-						},
-					},
-					"cover": map[string]any{
-						"type":        "object",
-						"description": "页面封面（可选）",
-						"properties": map[string]any{
-							"type": map[string]any{
-								"type":        "string",
-								"description": "封面类型：'external'",
-								"enum":        []string{"external"},
-							},
-							"url": map[string]any{
-								"type":        "string",
-								"description": "封面图片 URL",
-							},
-						},
+						"description": "页面属性，支持类型：string(富文本), number(数字), date(日期，格式：yyyy-MM-dd)（可选）",
 					},
 				},
 				"required": []string{"parentId", "title"},

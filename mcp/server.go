@@ -460,21 +460,6 @@ func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]
 		params.Properties = properties
 	}
 
-	if icon, ok := args["icon"].(map[string]any); ok {
-		params.Icon = &Icon{
-			Type:  icon["type"].(string),
-			Emoji: icon["emoji"].(string),
-			URL:   icon["url"].(string),
-		}
-	}
-
-	if cover, ok := args["cover"].(map[string]any); ok {
-		params.Cover = &Cover{
-			Type: cover["type"].(string),
-			URL:  cover["url"].(string),
-		}
-	}
-
 	// 构建创建页面请求
 	createReq := &notionapi.PageCreateRequest{
 		Parent: notionapi.Parent{
@@ -496,64 +481,24 @@ func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]
 		},
 	}
 
-	// 添加其他属性
+	// 添加其他属性 - 使用简化的属性转换
 	for key, value := range params.Properties {
-		// 这里需要根据具体的属性类型进行转换
-		// 为了简化，这里只处理基本的文本属性
-		if strValue, ok := value.(string); ok {
-			createReq.Properties[key] = notionapi.RichTextProperty{
-				Type: notionapi.PropertyTypeRichText,
-				RichText: []notionapi.RichText{
-					{
-						Type: notionapi.RichTextTypeText,
-						Text: &notionapi.Text{
-							Content: strValue,
-						},
-					},
-				},
-			}
+		property := s.convertToNotionProperty(key, value)
+		if property != nil {
+			createReq.Properties[key] = property
 		}
 	}
 
-	// 添加图标
-	if params.Icon != nil {
-		if params.Icon.Type == "emoji" {
-			emoji := notionapi.Emoji(params.Icon.Emoji)
-			createReq.Icon = &notionapi.Icon{
-				Type:  "emoji",
-				Emoji: &emoji,
-			}
-		}
+	// 如果有 markdown 内容，转换为 blocks 并添加到 Children
+	if params.Content != "" {
+		blocks := MarkdownToBlocks(params.Content)
+		createReq.Children = blocks
 	}
 
-	// 添加封面
-	if params.Cover != nil {
-		createReq.Cover = &notionapi.Image{
-			Type: notionapi.FileTypeExternal,
-			External: &notionapi.FileObject{
-				URL: params.Cover.URL,
-			},
-		}
-	}
-
-	// 执行创建页面
+	// 执行创建页面（一次性完成，包含内容）
 	page, err := s.notionClient.Page.Create(ctx, createReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Notion page: %w", err)
-	}
-
-	// 如果有内容，添加块
-	if params.Content != "" {
-		blocks := s.parseContentToBlocks(params.Content)
-		if len(blocks) > 0 {
-			appendReq := &notionapi.AppendBlockChildrenRequest{
-				Children: blocks,
-			}
-			_, err = s.notionClient.Block.AppendChildren(ctx, notionapi.BlockID(page.ID), appendReq)
-			if err != nil {
-				log.Printf("Warning: failed to append content blocks: %v", err)
-			}
-		}
 	}
 
 	// 转换结果
@@ -1025,6 +970,63 @@ func (s *MCPServer) parseContentToBlocks(content string) []notionapi.Block {
 	}
 
 	return blocks
+}
+
+// convertToNotionProperty 将简化的属性值转换为 Notion 属性
+func (s *MCPServer) convertToNotionProperty(key string, value any) notionapi.Property {
+	switch v := value.(type) {
+	case string:
+		// 检查是否为日期格式 (yyyy-MM-dd)
+		if t, err := time.Parse("2006-01-02", v); err == nil {
+			// 日期属性
+			date := notionapi.Date(t)
+			return notionapi.DateProperty{
+				Type: notionapi.PropertyTypeDate,
+				Date: &notionapi.DateObject{
+					Start: &date,
+				},
+			}
+		}
+		// 默认为富文本属性
+		return notionapi.RichTextProperty{
+			Type: notionapi.PropertyTypeRichText,
+			RichText: []notionapi.RichText{
+				{
+					Type: notionapi.RichTextTypeText,
+					Text: &notionapi.Text{
+						Content: v,
+					},
+					PlainText: v,
+				},
+			},
+		}
+	case float64:
+		// 数字属性
+		return notionapi.NumberProperty{
+			Type:   notionapi.PropertyTypeNumber,
+			Number: v,
+		}
+	case int:
+		// 整数属性（转换为 float64）
+		return notionapi.NumberProperty{
+			Type:   notionapi.PropertyTypeNumber,
+			Number: float64(v),
+		}
+	}
+
+	// 默认返回富文本属性
+	return notionapi.RichTextProperty{
+		Type: notionapi.PropertyTypeRichText,
+		RichText: []notionapi.RichText{
+			{
+				Type: notionapi.RichTextTypeText,
+				Text: &notionapi.Text{
+					Content: fmt.Sprintf("%v", value),
+				},
+				PlainText: fmt.Sprintf("%v", value),
+			},
+		},
+	}
 }
 
 // parseContentToBlocksWithType 根据类型解析内容为块

@@ -94,12 +94,6 @@ func (sdk *NotionMCPSDK) CreatePage(ctx context.Context, params *NotionCreatePag
 	if params.Properties != nil {
 		args["properties"] = params.Properties
 	}
-	if params.Icon != nil {
-		args["icon"] = params.Icon
-	}
-	if params.Cover != nil {
-		args["cover"] = params.Cover
-	}
 
 	// 调用创建页面工具
 	toolCall := ToolCall{

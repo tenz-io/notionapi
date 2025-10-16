@@ -75,15 +75,38 @@ func mainAdvanced() {
 		createParams := &mcp.NotionCreatePageParams{
 			ParentID: parentPageID,
 			Title:    "MCP SDK 高级测试页面",
-			Content:  "这是一个通过 MCP SDK 创建的高级测试页面，包含图标和自定义属性。",
-			Icon: &mcp.Icon{
-				Type:  "emoji",
-				Emoji: "🚀",
-			},
+			Content: `# MCP SDK 高级测试页面
+
+这是一个通过 MCP SDK 创建的高级测试页面，支持 **Markdown** 格式。
+
+## 功能特性
+
+- ✅ 支持 Markdown 格式
+- ✅ 支持多种属性类型
+- ✅ 一次性创建页面和内容
+
+### 代码示例
+
+` + "```" + `go
+// 创建页面示例
+page, err := sdk.CreatePage(ctx, params)
+` + "```" + `
+
+> 这是一个引用块，展示 Markdown 功能。
+
+- 列表项 1
+- 列表项 2
+- 列表项 3
+
+1. 有序列表 1
+2. 有序列表 2
+3. 有序列表 3`,
 			Properties: map[string]any{
 				"status":   "进行中",
 				"priority": "高",
-				"tags":     []string{"mcp", "sdk", "测试"},
+				"progress": 75.5,
+				"due_date": "2024-12-31",
+				"created":  "2024-01-15",
 			},
 		}
 

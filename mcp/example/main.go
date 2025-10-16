@@ -72,15 +72,6 @@ func runBasicExample() {
 		}
 	}
 
-	// 示例 2: 获取工作区信息
-	fmt.Println("\n=== 工作区信息 ===")
-	workspaceInfo, err := sdk.GetWorkspaceInfo(ctx)
-	if err != nil {
-		log.Printf("获取工作区信息失败: %v", err)
-	} else {
-		fmt.Printf("工作区统计: %+v\n", workspaceInfo)
-	}
-
 	// 示例 3: 显示可用工具和资源
 	fmt.Println("\n=== 可用工具 ===")
 	tools := sdk.GetTools()
@@ -130,8 +121,8 @@ func runAdvancedExample() {
 
 	// 搜索页面，按最后编辑时间降序排列
 	searchParams := &mcp.NotionSearchParams{
-		Query:     "项目",
-		Filter:    "page",
+		Query:     "mcp",
+		Filter:    "database",
 		SortBy:    "last_edited_time",
 		SortOrder: "descending",
 		PageSize:  10,
