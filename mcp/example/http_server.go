@@ -60,7 +60,7 @@ func mainServer() {
 // healthHandler 健康检查处理器
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	json.NewEncoder(w).Encode(map[string]any{
 		"status":    "healthy",
 		"timestamp": time.Now().Unix(),
 		"service":   "notion-mcp-server",
@@ -77,7 +77,7 @@ func toolsHandler(sdk *mcp.NotionMCPSDK) http.HandlerFunc {
 
 		tools := sdk.GetTools()
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		json.NewEncoder(w).Encode(map[string]any{
 			"tools": tools,
 		})
 	}
@@ -93,7 +93,7 @@ func resourcesHandler(sdk *mcp.NotionMCPSDK) http.HandlerFunc {
 
 		resources := sdk.GetResources()
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		json.NewEncoder(w).Encode(map[string]any{
 			"resources": resources,
 		})
 	}

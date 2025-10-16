@@ -71,18 +71,18 @@ func (s *MCPServer) HandleRequest(ctx context.Context, req *Request) *Response {
 
 // handleInitialize 处理初始化请求
 func (s *MCPServer) handleInitialize(req *Request) *Response {
-	result := map[string]interface{}{
+	result := map[string]any{
 		"protocolVersion": "2024-11-05",
-		"capabilities": map[string]interface{}{
-			"tools": map[string]interface{}{
+		"capabilities": map[string]any{
+			"tools": map[string]any{
 				"listChanged": false,
 			},
-			"resources": map[string]interface{}{
+			"resources": map[string]any{
 				"subscribe":   false,
 				"listChanged": false,
 			},
 		},
-		"serverInfo": map[string]interface{}{
+		"serverInfo": map[string]any{
 			"name":    s.config.ServerName,
 			"version": s.config.ServerVersion,
 		},
@@ -100,7 +100,7 @@ func (s *MCPServer) handleToolsList(req *Request) *Response {
 	return &Response{
 		JSONRPC: "2.0",
 		ID:      req.ID,
-		Result: map[string]interface{}{
+		Result: map[string]any{
 			"tools": s.tools,
 		},
 	}
@@ -199,7 +199,7 @@ func (s *MCPServer) handleResourcesList(req *Request) *Response {
 	return &Response{
 		JSONRPC: "2.0",
 		ID:      req.ID,
-		Result: map[string]interface{}{
+		Result: map[string]any{
 			"resources": s.resources,
 		},
 	}
@@ -208,7 +208,7 @@ func (s *MCPServer) handleResourcesList(req *Request) *Response {
 // handleResourcesRead 处理资源读取请求
 func (s *MCPServer) handleResourcesRead(ctx context.Context, req *Request) *Response {
 	// 解析资源读取参数
-	var params map[string]interface{}
+	var params map[string]any
 
 	// 检查 Params 的类型并正确解析
 	if req.Params == nil {
@@ -222,8 +222,8 @@ func (s *MCPServer) handleResourcesRead(ctx context.Context, req *Request) *Resp
 		}
 	}
 
-	// 如果 Params 已经是 map[string]interface{} 类型，直接使用
-	if p, ok := req.Params.(map[string]interface{}); ok {
+	// 如果 Params 已经是 map[string]any 类型，直接使用
+	if p, ok := req.Params.(map[string]any); ok {
 		params = p
 	} else {
 		// 否则尝试从 JSON 解析
@@ -295,14 +295,14 @@ func (s *MCPServer) handleResourcesRead(ctx context.Context, req *Request) *Resp
 	return &Response{
 		JSONRPC: "2.0",
 		ID:      req.ID,
-		Result: map[string]interface{}{
+		Result: map[string]any{
 			"contents": content,
 		},
 	}
 }
 
 // handleNotionSearch 处理 Notion 搜索
-func (s *MCPServer) handleNotionSearch(ctx context.Context, args map[string]interface{}) (*ToolResult, error) {
+func (s *MCPServer) handleNotionSearch(ctx context.Context, args map[string]any) (*ToolResult, error) {
 	// 解析搜索参数
 	params := &NotionSearchParams{
 		PageSize: s.config.DefaultPageSize,
@@ -436,7 +436,7 @@ func (s *MCPServer) handleNotionSearch(ctx context.Context, args map[string]inte
 }
 
 // handleNotionCreatePage 处理创建 Notion 页面
-func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]interface{}) (*ToolResult, error) {
+func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]any) (*ToolResult, error) {
 	// 解析创建页面参数
 	params := &NotionCreatePageParams{}
 
@@ -456,11 +456,11 @@ func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]
 		params.Content = content
 	}
 
-	if properties, ok := args["properties"].(map[string]interface{}); ok {
+	if properties, ok := args["properties"].(map[string]any); ok {
 		params.Properties = properties
 	}
 
-	if icon, ok := args["icon"].(map[string]interface{}); ok {
+	if icon, ok := args["icon"].(map[string]any); ok {
 		params.Icon = &Icon{
 			Type:  icon["type"].(string),
 			Emoji: icon["emoji"].(string),
@@ -468,7 +468,7 @@ func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]
 		}
 	}
 
-	if cover, ok := args["cover"].(map[string]interface{}); ok {
+	if cover, ok := args["cover"].(map[string]any); ok {
 		params.Cover = &Cover{
 			Type: cover["type"].(string),
 			URL:  cover["url"].(string),
@@ -576,7 +576,7 @@ func (s *MCPServer) handleNotionCreatePage(ctx context.Context, args map[string]
 }
 
 // handleNotionUpdatePage 处理更新 Notion 页面
-func (s *MCPServer) handleNotionUpdatePage(ctx context.Context, args map[string]interface{}) (*ToolResult, error) {
+func (s *MCPServer) handleNotionUpdatePage(ctx context.Context, args map[string]any) (*ToolResult, error) {
 	// 解析更新页面参数
 	params := &NotionUpdatePageParams{}
 
@@ -594,7 +594,7 @@ func (s *MCPServer) handleNotionUpdatePage(ctx context.Context, args map[string]
 		params.Content = content
 	}
 
-	if properties, ok := args["properties"].(map[string]interface{}); ok {
+	if properties, ok := args["properties"].(map[string]any); ok {
 		params.Properties = properties
 	}
 
@@ -687,7 +687,7 @@ func (s *MCPServer) handleNotionUpdatePage(ctx context.Context, args map[string]
 }
 
 // handleNotionAppendBlock 处理添加块内容
-func (s *MCPServer) handleNotionAppendBlock(ctx context.Context, args map[string]interface{}) (*ToolResult, error) {
+func (s *MCPServer) handleNotionAppendBlock(ctx context.Context, args map[string]any) (*ToolResult, error) {
 	// 解析添加块参数
 	params := &NotionAppendBlockParams{}
 
@@ -782,7 +782,7 @@ func (s *MCPServer) handleWorkspaceResource(ctx context.Context) ([]Content, err
 	}
 
 	// 构建工作区信息
-	workspaceInfo := map[string]interface{}{
+	workspaceInfo := map[string]any{
 		"totalPages":     0,
 		"totalDatabases": 0,
 		"recentItems":    make([]NotionItem, 0),
@@ -890,7 +890,7 @@ func (s *MCPServer) convertToBlockItem(block notionapi.Block) BlockItem {
 		HasChildren:    block.GetHasChildren(),
 		Archived:       block.GetArchived(),
 		Parent:         s.convertParent(block.GetParent()),
-		Content:        map[string]interface{}{"text": block.GetRichTextString()},
+		Content:        map[string]any{"text": block.GetRichTextString()},
 	}
 }
 
@@ -951,10 +951,10 @@ func (s *MCPServer) convertCover(cover *notionapi.Image) *Cover {
 }
 
 // convertProperties 转换属性
-func (s *MCPServer) convertProperties(properties notionapi.Properties) map[string]interface{} {
-	result := make(map[string]interface{})
+func (s *MCPServer) convertProperties(properties notionapi.Properties) map[string]any {
+	result := make(map[string]any)
 	for key, prop := range properties {
-		result[key] = map[string]interface{}{
+		result[key] = map[string]any{
 			"type": string(prop.GetType()),
 			"id":   prop.GetID(),
 		}
@@ -963,10 +963,10 @@ func (s *MCPServer) convertProperties(properties notionapi.Properties) map[strin
 }
 
 // convertPropertyConfigs 转换属性配置
-func (s *MCPServer) convertPropertyConfigs(configs notionapi.PropertyConfigs) map[string]interface{} {
-	result := make(map[string]interface{})
+func (s *MCPServer) convertPropertyConfigs(configs notionapi.PropertyConfigs) map[string]any {
+	result := make(map[string]any)
 	for key, config := range configs {
-		result[key] = map[string]interface{}{
+		result[key] = map[string]any{
 			"type": string(config.GetType()),
 			"id":   config.GetID(),
 		}

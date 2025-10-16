@@ -80,7 +80,7 @@ func mainAdvanced() {
 				Type:  "emoji",
 				Emoji: "🚀",
 			},
-			Properties: map[string]interface{}{
+			Properties: map[string]any{
 				"status":   "进行中",
 				"priority": "高",
 				"tags":     []string{"mcp", "sdk", "测试"},
@@ -101,7 +101,7 @@ func mainAdvanced() {
 				PageID:  pageResult.ID,
 				Title:   "MCP SDK 高级测试页面 - 已更新",
 				Content: "页面内容已更新，添加了更多信息。",
-				Properties: map[string]interface{}{
+				Properties: map[string]any{
 					"status":     "已完成",
 					"priority":   "中",
 					"updated_at": time.Now().Format("2006-01-02 15:04:05"),

@@ -8,47 +8,47 @@ import (
 
 // Request 表示 MCP 请求
 type Request struct {
-	JSONRPC string      `json:"jsonrpc"`
-	ID      interface{} `json:"id"`
-	Method  string      `json:"method"`
-	Params  interface{} `json:"params,omitempty"`
+	JSONRPC string `json:"jsonrpc"`
+	ID      any    `json:"id"`
+	Method  string `json:"method"`
+	Params  any    `json:"params,omitempty"`
 }
 
 // Response 表示 MCP 响应
 type Response struct {
-	JSONRPC string      `json:"jsonrpc"`
-	ID      interface{} `json:"id"`
-	Result  interface{} `json:"result,omitempty"`
-	Error   *Error      `json:"error,omitempty"`
+	JSONRPC string `json:"jsonrpc"`
+	ID      any    `json:"id"`
+	Result  any    `json:"result,omitempty"`
+	Error   *Error `json:"error,omitempty"`
 }
 
 // Error 表示 MCP 错误
 type Error struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data,omitempty"`
 }
 
 // Tool 表示 MCP 工具定义
 type Tool struct {
-	Name        string                 `json:"name"`
-	Description string                 `json:"description"`
-	InputSchema map[string]interface{} `json:"inputSchema"`
+	Name        string         `json:"name"`
+	Description string         `json:"description"`
+	InputSchema map[string]any `json:"inputSchema"`
 }
 
 // Resource 表示 MCP 资源定义
 type Resource struct {
-	URI         string                 `json:"uri"`
-	Name        string                 `json:"name"`
-	Description string                 `json:"description,omitempty"`
-	MimeType    string                 `json:"mimeType,omitempty"`
-	Metadata    map[string]interface{} `json:"metadata,omitempty"`
+	URI         string         `json:"uri"`
+	Name        string         `json:"name"`
+	Description string         `json:"description,omitempty"`
+	MimeType    string         `json:"mimeType,omitempty"`
+	Metadata    map[string]any `json:"metadata,omitempty"`
 }
 
 // ToolCall 表示工具调用
 type ToolCall struct {
-	Name      string                 `json:"name"`
-	Arguments map[string]interface{} `json:"arguments"`
+	Name      string         `json:"name"`
+	Arguments map[string]any `json:"arguments"`
 }
 
 // ToolResult 表示工具调用结果
@@ -59,9 +59,9 @@ type ToolResult struct {
 
 // Content 表示内容项
 type Content struct {
-	Type string      `json:"type"`
-	Text string      `json:"text,omitempty"`
-	Data interface{} `json:"data,omitempty"`
+	Type string `json:"type"`
+	Text string `json:"text,omitempty"`
+	Data any    `json:"data,omitempty"`
 }
 
 // NotionSearchParams 表示 Notion 搜索参数
@@ -76,21 +76,21 @@ type NotionSearchParams struct {
 
 // NotionCreatePageParams 表示创建 Notion 页面参数
 type NotionCreatePageParams struct {
-	ParentID   string                 `json:"parentId"`
-	Title      string                 `json:"title"`
-	Content    string                 `json:"content,omitempty"`
-	Properties map[string]interface{} `json:"properties,omitempty"`
-	Icon       *Icon                  `json:"icon,omitempty"`
-	Cover      *Cover                 `json:"cover,omitempty"`
+	ParentID   string         `json:"parentId"`
+	Title      string         `json:"title"`
+	Content    string         `json:"content,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
+	Icon       *Icon          `json:"icon,omitempty"`
+	Cover      *Cover         `json:"cover,omitempty"`
 }
 
 // NotionUpdatePageParams 表示更新 Notion 页面参数
 type NotionUpdatePageParams struct {
-	PageID     string                 `json:"pageId"`
-	Title      string                 `json:"title,omitempty"`
-	Content    string                 `json:"content,omitempty"`
-	Properties map[string]interface{} `json:"properties,omitempty"`
-	Archived   *bool                  `json:"archived,omitempty"`
+	PageID     string         `json:"pageId"`
+	Title      string         `json:"title,omitempty"`
+	Content    string         `json:"content,omitempty"`
+	Properties map[string]any `json:"properties,omitempty"`
+	Archived   *bool          `json:"archived,omitempty"`
 }
 
 // NotionAppendBlockParams 表示添加块内容参数
@@ -123,20 +123,20 @@ type NotionSearchResult struct {
 
 // NotionItem 表示 Notion 项目（页面或数据库）
 type NotionItem struct {
-	Object         string                 `json:"object"`
-	ID             string                 `json:"id"`
-	CreatedTime    time.Time              `json:"created_time"`
-	LastEditedTime time.Time              `json:"last_edited_time"`
-	CreatedBy      *User                  `json:"created_by,omitempty"`
-	LastEditedBy   *User                  `json:"last_edited_by,omitempty"`
-	Archived       bool                   `json:"archived"`
-	Properties     map[string]interface{} `json:"properties,omitempty"`
-	Parent         *Parent                `json:"parent,omitempty"`
-	URL            string                 `json:"url"`
-	PublicURL      string                 `json:"public_url,omitempty"`
-	Icon           *Icon                  `json:"icon,omitempty"`
-	Cover          *Cover                 `json:"cover,omitempty"`
-	Title          string                 `json:"title,omitempty"`
+	Object         string         `json:"object"`
+	ID             string         `json:"id"`
+	CreatedTime    time.Time      `json:"created_time"`
+	LastEditedTime time.Time      `json:"last_edited_time"`
+	CreatedBy      *User          `json:"created_by,omitempty"`
+	LastEditedBy   *User          `json:"last_edited_by,omitempty"`
+	Archived       bool           `json:"archived"`
+	Properties     map[string]any `json:"properties,omitempty"`
+	Parent         *Parent        `json:"parent,omitempty"`
+	URL            string         `json:"url"`
+	PublicURL      string         `json:"public_url,omitempty"`
+	Icon           *Icon          `json:"icon,omitempty"`
+	Cover          *Cover         `json:"cover,omitempty"`
+	Title          string         `json:"title,omitempty"`
 }
 
 // User 表示用户信息
@@ -159,19 +159,19 @@ type Parent struct {
 
 // NotionPageResult 表示 Notion 页面操作结果
 type NotionPageResult struct {
-	Object         string                 `json:"object"`
-	ID             string                 `json:"id"`
-	CreatedTime    time.Time              `json:"created_time"`
-	LastEditedTime time.Time              `json:"last_edited_time"`
-	CreatedBy      *User                  `json:"created_by,omitempty"`
-	LastEditedBy   *User                  `json:"last_edited_by,omitempty"`
-	Archived       bool                   `json:"archived"`
-	Properties     map[string]interface{} `json:"properties"`
-	Parent         *Parent                `json:"parent"`
-	URL            string                 `json:"url"`
-	PublicURL      string                 `json:"public_url,omitempty"`
-	Icon           *Icon                  `json:"icon,omitempty"`
-	Cover          *Cover                 `json:"cover,omitempty"`
+	Object         string         `json:"object"`
+	ID             string         `json:"id"`
+	CreatedTime    time.Time      `json:"created_time"`
+	LastEditedTime time.Time      `json:"last_edited_time"`
+	CreatedBy      *User          `json:"created_by,omitempty"`
+	LastEditedBy   *User          `json:"last_edited_by,omitempty"`
+	Archived       bool           `json:"archived"`
+	Properties     map[string]any `json:"properties"`
+	Parent         *Parent        `json:"parent"`
+	URL            string         `json:"url"`
+	PublicURL      string         `json:"public_url,omitempty"`
+	Icon           *Icon          `json:"icon,omitempty"`
+	Cover          *Cover         `json:"cover,omitempty"`
 }
 
 // NotionBlockResult 表示 Notion 块操作结果
@@ -182,17 +182,17 @@ type NotionBlockResult struct {
 
 // BlockItem 表示块项目
 type BlockItem struct {
-	Object         string                 `json:"object"`
-	ID             string                 `json:"id"`
-	Type           string                 `json:"type"`
-	CreatedTime    time.Time              `json:"created_time"`
-	LastEditedTime time.Time              `json:"last_edited_time"`
-	CreatedBy      *User                  `json:"created_by,omitempty"`
-	LastEditedBy   *User                  `json:"last_edited_by,omitempty"`
-	HasChildren    bool                   `json:"has_children"`
-	Archived       bool                   `json:"archived"`
-	Parent         *Parent                `json:"parent,omitempty"`
-	Content        map[string]interface{} `json:"content,omitempty"`
+	Object         string         `json:"object"`
+	ID             string         `json:"id"`
+	Type           string         `json:"type"`
+	CreatedTime    time.Time      `json:"created_time"`
+	LastEditedTime time.Time      `json:"last_edited_time"`
+	CreatedBy      *User          `json:"created_by,omitempty"`
+	LastEditedBy   *User          `json:"last_edited_by,omitempty"`
+	HasChildren    bool           `json:"has_children"`
+	Archived       bool           `json:"archived"`
+	Parent         *Parent        `json:"parent,omitempty"`
+	Content        map[string]any `json:"content,omitempty"`
 }
 
 // MCPConfig 表示 MCP 服务器配置
@@ -238,9 +238,9 @@ func (c *MCPConfig) Validate() error {
 
 // MCPError 表示 MCP 错误
 type MCPError struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data,omitempty"`
 }
 
 func (e *MCPError) Error() string {

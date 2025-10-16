@@ -37,7 +37,7 @@ func NewNotionMCPSDKWithDefaults(notionToken string) (*NotionMCPSDK, error) {
 // Search 搜索 Notion 内容
 func (sdk *NotionMCPSDK) Search(ctx context.Context, params *NotionSearchParams) (*NotionSearchResult, error) {
 	// 构建工具调用参数
-	args := map[string]interface{}{
+	args := map[string]any{
 		"pageSize": params.PageSize,
 	}
 
@@ -83,7 +83,7 @@ func (sdk *NotionMCPSDK) Search(ctx context.Context, params *NotionSearchParams)
 // CreatePage 创建 Notion 页面
 func (sdk *NotionMCPSDK) CreatePage(ctx context.Context, params *NotionCreatePageParams) (*NotionPageResult, error) {
 	// 构建工具调用参数
-	args := map[string]interface{}{
+	args := map[string]any{
 		"parentId": params.ParentID,
 		"title":    params.Title,
 	}
@@ -127,7 +127,7 @@ func (sdk *NotionMCPSDK) CreatePage(ctx context.Context, params *NotionCreatePag
 // UpdatePage 更新 Notion 页面
 func (sdk *NotionMCPSDK) UpdatePage(ctx context.Context, params *NotionUpdatePageParams) (*NotionPageResult, error) {
 	// 构建工具调用参数
-	args := map[string]interface{}{
+	args := map[string]any{
 		"pageId": params.PageID,
 	}
 
@@ -170,7 +170,7 @@ func (sdk *NotionMCPSDK) UpdatePage(ctx context.Context, params *NotionUpdatePag
 // AppendBlock 向页面添加块内容
 func (sdk *NotionMCPSDK) AppendBlock(ctx context.Context, params *NotionAppendBlockParams) (*NotionBlockResult, error) {
 	// 构建工具调用参数
-	args := map[string]interface{}{
+	args := map[string]any{
 		"pageId":  params.PageID,
 		"content": params.Content,
 	}
@@ -203,13 +203,13 @@ func (sdk *NotionMCPSDK) AppendBlock(ctx context.Context, params *NotionAppendBl
 }
 
 // GetWorkspaceInfo 获取工作区信息
-func (sdk *NotionMCPSDK) GetWorkspaceInfo(ctx context.Context) (map[string]interface{}, error) {
+func (sdk *NotionMCPSDK) GetWorkspaceInfo(ctx context.Context) (map[string]any, error) {
 	// 构建资源读取请求
 	req := &Request{
 		JSONRPC: "2.0",
 		ID:      1,
 		Method:  "resources/read",
-		Params: map[string]interface{}{
+		Params: map[string]any{
 			"uri": "notion://workspace",
 		},
 	}
@@ -221,17 +221,17 @@ func (sdk *NotionMCPSDK) GetWorkspaceInfo(ctx context.Context) (map[string]inter
 	}
 
 	// 解析结果
-	result, ok := resp.Result.(map[string]interface{})
+	result, ok := resp.Result.(map[string]any)
 	if !ok {
 		return nil, fmt.Errorf("invalid response format")
 	}
 
-	contents, ok := result["contents"].([]interface{})
+	contents, ok := result["contents"].([]any)
 	if !ok || len(contents) == 0 {
 		return nil, fmt.Errorf("no workspace info found")
 	}
 
-	content, ok := contents[0].(map[string]interface{})
+	content, ok := contents[0].(map[string]any)
 	if !ok {
 		return nil, fmt.Errorf("invalid content format")
 	}
@@ -242,7 +242,7 @@ func (sdk *NotionMCPSDK) GetWorkspaceInfo(ctx context.Context) (map[string]inter
 	}
 
 	// 解析 JSON
-	var workspaceInfo map[string]interface{}
+	var workspaceInfo map[string]any
 	err := json.Unmarshal([]byte(text), &workspaceInfo)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse workspace info: %w", err)

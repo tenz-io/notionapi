@@ -147,7 +147,7 @@ createParams := &mcp.NotionCreatePageParams{
         Type:  "emoji",
         Emoji: "🚀",
     },
-    Properties: map[string]interface{}{
+    Properties: map[string]any{
         "status": "进行中",
     },
 }
@@ -187,7 +187,7 @@ updateParams := &mcp.NotionUpdatePageParams{
     PageID:  pageID,
     Title:   "新标题",
     Content: "新内容",
-    Properties: map[string]interface{}{
+    Properties: map[string]any{
         "status": "已完成",
     },
 }
